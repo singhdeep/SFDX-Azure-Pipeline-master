@@ -16,13 +16,13 @@ steps:
     username: '$(SalesforceUsername)'
     password: '$(SalesforcePassword)'
     securitytoken: '$(SalesforceSecurityToken)'
-    alias: 'AzureDevOpsScratchOrg'
+    alias: 'dev1'
     isdevhub: true
     isTelemetryEnabled: true
 
 - task: sfpowerscript-deploysourcetoorg-task@7
   inputs:
-    target_org: 'AzureDevOpsScratchOrg'
+    target_org: 'dev1'
     project_directory: './'
     source_directory: 'force-app'
     checkonly: false
@@ -33,7 +33,7 @@ steps:
 
 - task: sfpwowerscript-triggerapextest-task@6
   inputs:
-    target_org: 'AzureDevOpsScratchOrg'
+    target_org: 'dev1'
     testlevel: 'RunAllTestsInOrg'
     wait_time: '60'
     isTelemetryEnabled: true
@@ -41,6 +41,6 @@ steps:
 
 - task: sfpwowerscript-validateapextestcoverage-task@3
   inputs:
-    target_org: 'AzureDevOpsScratchOrg'
+    target_org: 'dev1'
     test_coverage: '75'
     isTelemetryEnabled: true
