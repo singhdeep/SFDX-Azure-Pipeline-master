@@ -4,7 +4,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-    steps:
+steps:
     - bash: |
         echo 'y' | sfdx plugins:install sfpowerkit
         echo Installation done...
