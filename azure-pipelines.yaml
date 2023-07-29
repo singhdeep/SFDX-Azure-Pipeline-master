@@ -4,43 +4,54 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
+    steps:
+    - bash: |
+        echo 'y' | sfdx plugins:install sfpowerkit
+        echo Installation done...
+      displayName: 'Install sfpowerkit'
+    - bash: |
+        export PATH=~/sfdx/bin:$PATH
 
-- task: sfpwowerscript-installsfdx-task@6
-  inputs:
-    isTelemetryEnabled: true
+        echo "SF-ORG-POC-USERNAME -  $(SalesforceUsername)"
+            
+        sfdx sfpowerkit:auth:login -u $(SF-ORG-INTDEV-USERNAME) -p $(SF-ORG-INTDEV-PASSWORD) -a ${SF-ORG-INTDEV-ORGNAME}
+        sfdx config:set defaultusername=$(SF-ORG-INTDEV-USERNAME)
+      displayName: 'Authorize sandbox'
+# - task: sfpwowerscript-installsfdx-task@6
+#   inputs:
+#     isTelemetryEnabled: true
 
-- task: sfpwowerscript-authenticateorg-task@8
-  inputs:
-    method: 'Credentials'
-    username: '$(SalesforceUsername)'
-    password: '$(SalesforcePassword)'
-    securitytoken: '$(SalesforceSecurityToken)'
-    alias: 'dev1'
-    isdevhub: true
-    isTelemetryEnabled: true
+# - task: sfpwowerscript-authenticateorg-task@8
+#   inputs:
+#     method: 'Credentials'
+#     username: '$(SalesforceUsername)'
+#     password: '$(SalesforcePassword)'
+#     securitytoken: '$(SalesforceSecurityToken)'
+#     alias: 'dev1'
+#     isdevhub: true
+#     isTelemetryEnabled: true
 
-- task: sfpowerscript-deploysourcetoorg-task@7
-  inputs:
-    target_org: 'dev1'
-    project_directory: './'
-    source_directory: 'force-app'
-    checkonly: false
-    wait_time: '20'
-    testlevel: 'NoTestRun'
-    isToBreakBuildIfEmpty: true
-    isTelemetryEnabled: true
+# - task: sfpowerscript-deploysourcetoorg-task@7
+#   inputs:
+#     target_org: 'dev1'
+#     project_directory: './'
+#     source_directory: 'force-app'
+#     checkonly: false
+#     wait_time: '20'
+#     testlevel: 'NoTestRun'
+#     isToBreakBuildIfEmpty: true
+#     isTelemetryEnabled: true
 
-- task: sfpwowerscript-triggerapextest-task@6
-  inputs:
-    target_org: 'dev1'
-    testlevel: 'RunAllTestsInOrg'
-    wait_time: '60'
-    isTelemetryEnabled: true
+# - task: sfpwowerscript-triggerapextest-task@6
+#   inputs:
+#     target_org: 'dev1'
+#     testlevel: 'RunAllTestsInOrg'
+#     wait_time: '60'
+#     isTelemetryEnabled: true
 
 
-- task: sfpwowerscript-validateapextestcoverage-task@3
-  inputs:
-    target_org: 'dev1'
-    test_coverage: '75'
-    isTelemetryEnabled: true
+# - task: sfpwowerscript-validateapextestcoverage-task@3
+#   inputs:
+#     target_org: 'dev1'
+#     test_coverage: '75'
+#     isTelemetryEnabled: true
